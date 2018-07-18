@@ -3,7 +3,7 @@
 
 body {
 	background: #1d2a33 url('../images/bg.jpg') no-repeat;
-	background-size: cover; 
+	background-size: cover;
 }
 
 a:hover {
@@ -19,6 +19,12 @@ a:hover {
 .lead {
 	margin-bottom: 2.5rem;
 }
+
+.h6MainPage {
+	margin-bottom:2.1rem;
+	font-size:1.1rem;
+}
+
 .main {
 	color: #fff;
 	min-height: calc(100vh - 34px);
@@ -70,7 +76,7 @@ a:hover {
 	background: rgba(255,255,255, .12);
 }
 .btn-light:hover {
-	background: rgba(255,255,255, .2);	
+	background: rgba(255,255,255, .2);
 }
 .active,
 .btn {
@@ -139,7 +145,7 @@ a:hover {
 	}
 }
 
-@media (min-width: 48em) { 
+@media (min-width: 48em) {
 	.navbar {
 		min-height: 70px;
 	}
@@ -155,4 +161,3 @@ a:hover {
 		padding-top: 8rem;
 	}
 }
-
