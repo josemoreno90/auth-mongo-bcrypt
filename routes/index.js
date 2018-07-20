@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var User = require('../models/user');
 
 // GET /register
 router.get('/register', function(req, res, next) {
@@ -8,7 +9,40 @@ router.get('/register', function(req, res, next) {
 
 // POST /register
 router.post('/register', function(req, res, next) {
-  return res.send("User created.")
+  if (req.body.email &&
+    req.body.name &&
+    req.body.password &&
+    req.body.confirmPassword) {
+
+
+      // confirm that user typed same password twice
+      console.log("Password:" + req.body.password)
+      console.log("ConfirmPassword:" + req.body.confirmPassword)
+      if (req.body.password !== req.body.confirmPassword) {
+        var err = new Error('Passwords dont match');
+        err.status = 400;
+        return next(err);
+    }
+    // create object with form input
+    var userData = {
+      email: req.body.email,
+      name: req.body.name,
+      password: req.body.password
+    };
+
+    User.create(userData, function (error,user) {
+      if (error) {
+        return next(error);
+      } else {
+        return res.redirect('/profile');
+      }
+    })
+
+  } else {
+    var err = new Error("All fields required.");
+    err.status = 400;
+    return next(err);
+  }
 })
 
 
