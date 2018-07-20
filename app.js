@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var app = express();
 
 // mongodb connection
-mongoose.connect("mongodb://localhost:27017/bookworm",{ useNewUrlParser: true });
+mongoose.connect("mongodb://localhost:27017/wewillcode",{ useNewUrlParser: true });
 var db = mongoose.connection;
 // mongo error
 db.on('error', console.error.bind(console, 'connection error:'));
