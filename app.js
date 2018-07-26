@@ -1,7 +1,17 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var session = require('express-session');
 var app = express();
+
+// use sessions for tracking logins
+app.use(session({
+  secret: "I love big blobs",
+  // resave option forces the session to be saved in session store whether anything changed or not
+  resave: true,
+  // saveUninitialized forces an uninitializied session to be saved in a session store which is a new and not yet modified session
+  saveUninitialized: false
+}))
 
 // mongodb connection
 mongoose.connect("mongodb://localhost:27017/wewillcode",{ useNewUrlParser: true });
