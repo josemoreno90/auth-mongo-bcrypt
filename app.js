@@ -2,29 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 var app = express();
-
-// use sessions for tracking logins
-app.use(session({
-  secret: "I love big blobs",
-  // resave option forces the session to be saved in session store whether anything changed or not
-  resave: true,
-  // saveUninitialized forces an uninitializied session to be saved in a session store which is a new and not yet modified session
-  saveUninitialized: false
-}))
-
-
-// make user ID available in templates
-app.use(function (req, res, next) {
-  res.locals.currentUser = req.session.userId;
-  next();
-})
-
-// mongodb connection
-mongoose.connect("mongodb://localhost:27017/wewillcode",{ useNewUrlParser: true });
-var db = mongoose.connection;
-// mongo error
-db.on('error', console.error.bind(console, 'connection error:'));
 
 // parse incoming requests
 app.use(bodyParser.json());
@@ -36,6 +15,34 @@ app.use(express.static(__dirname + '/public'));
 // view engine setup
 app.set('view engine', 'pug');
 app.set('views', __dirname + '/views');
+
+
+// mongodb connection
+mongoose.connect("mongodb://localhost:27017/wewillcode",{ useNewUrlParser: true });
+var db = mongoose.connection;
+// mongo error
+db.on('error', console.error.bind(console, 'connection error:'));
+
+// use sessions for tracking logins
+app.use(session({
+  secret: "I love big blobs",
+  // resave option forces the session to be saved in session store whether anything changed or not
+  resave: true,
+  // saveUninitialized forces an uninitializied session to be saved in a session store which is a new and not yet modified session
+  saveUninitialized: false,
+  //Store Session in MongoStore
+  store: new MongoStore({
+    mongooseConnection: db
+  })
+}))
+
+// make user ID available in templates
+app.use(function (req, res, next) {
+  res.locals.currentUser = req.session.userId;
+  next();
+})
+
+
 
 // include routes
 var routes = require('./routes/index');
