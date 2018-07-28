@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
-var mid = require('../middleware')
+
+var mid = require('../middleware');
 
 // GET /profile
 router.get('/profile', mid.requiresLogin, function(req, res, next) {
@@ -106,7 +107,7 @@ router.get('/', function(req, res, next) {
 });
 
 // GET /about
-router.get('/about', function(req, res, next) {
+router.get('/about', mid.requiresLogin, function(req, res, next) {
   return res.render('about', { title: 'About' });
 });
 
